@@ -25,9 +25,9 @@ public class SchoolController {
 
     @PostMapping("/api/schools")
     public School store(
-        @RequestParam(required = true) String name,
-        @RequestParam(required = true) int capacity,
-        @RequestParam(required = true) String country
+        @RequestParam String name,
+        @RequestParam int capacity,
+        @RequestParam String country
     ) {
         int idGeneratedByInsertion = SchoolRepository.insert(
             name,
@@ -42,16 +42,16 @@ public class SchoolController {
     @PutMapping("/api/schools/{id}")
     public School update(
         @PathVariable int id,
-        @RequestParam(required = true) String name,
-        @RequestParam(required = true) Integer capacity,
-        @RequestParam(required = true) String country
+        @RequestParam String name,
+        @RequestParam Integer capacity,
+        @RequestParam String country
     ) {
         School school = SchoolRepository.selectById(id);
         SchoolRepository.update(
             id,
-            name != null ? name : school.getName(),
+            name != null && !name.equals("") ? name : school.getName(),
             capacity != null ? capacity : school.getCapacity(),
-            country != null ? country : school.getCountry()
+            country != null && !country.equals("") ? country : school.getCountry()
         );
         return SchoolRepository.selectById(id);
     }
